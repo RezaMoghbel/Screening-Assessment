@@ -1,5 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var currentCount = ViewBag.Count ?? 1; // Always show 1 when it’s either null or 1
+    var charReversed = ViewBag.CharReversed ?? ""; // Default to empty string if null
+    var wordReversed = ViewBag.WordReversed ?? "";
+    var isCharReversedEmpty = string.IsNullOrEmpty(charReversed as string); // Check if charReversed is empty or null
+    var isWordReversedEmpty = string.IsNullOrEmpty(wordReversed as string);
+    var stringReversalError = ViewBag.StringReversalError ?? "";
+    var isStringReversalErrorEmpty = string.IsNullOrEmpty(stringReversalError as string);
 }
 <div class="row">
     <div class="col-12">
@@ -30,21 +37,94 @@
 
     <div class="col">
         <div class="mb-5">
-            <h3>Add your solution to question 2 here</h3>
+            <div class="grid-container">
+                <!-- Row 1 -->
+                <h3>Add your solution to question 2 here</h3>
 
-            <p><button>Increment number by 1</button></p>
-            <p><span>1</span></p>
-            <hr/>
+                <!-- Row 2 -->
+                <form method="post" asp-controller="Home" asp-action="Increment">
+                    <button type="submit">Increment number by 1</button>
+                </form>
+
+                <!-- Row 3 -->
+                <div class="bottom-row">
+                    <span>@currentCount</span>
+                    <a asp-controller="Home" asp-action="ResetCount">Reset</a>
+                </div>
+            </div>
         </div>
 
         <div class="mb-5">
-            <h3>Add your solution to question 3 here</h3>
-            <hr/>
+            <h3><a asp-controller="Home" asp-action="ClickSummary"> Add your solution to question 3 here</a></h3>
+            <hr />
         </div>
 
         <div class="mb-5">
-            <h4>How did you find this assessment?</h4>
-            @* Write here *@
+            <div class="grid-container">
+                <h2>String Reversal</h2>
+
+
+                <form method="post" asp-action="ReverseString">
+                    <div>
+                        <label>Enter a string:</label>
+                        <input type="text" name="input" />
+                        <button type="submit">Reverse</button>
+                    </div>
+                </form>
+                @if (!isCharReversedEmpty || !isWordReversedEmpty)
+                {
+                    <div class="bottom-row">
+                        @if (!isCharReversedEmpty)
+                        {
+                            <span><strong>Reversed characters:</strong> @charReversed</span>
+                            <span></span>
+                        }
+                        @if (!isWordReversedEmpty)
+                        {
+                            <span><strong>Reversed words:</strong> @wordReversed</span>
+                        }
+
+                        <a asp-controller="Home" asp-action="ResetReverse">Reset</a>
+                    </div>
+                }
+                @if (!isStringReversalErrorEmpty)
+                {
+                    <div class="alert alert-danger mt-5">
+                        <p>
+                            <strong>Error:</strong>
+
+                            @stringReversalError
+                        </p>
+
+                    </div>
+                }
+
+                <hr />
+            </div>
+
+
+            <div class="mb-5">
+                <h4>How did you find this assessment?</h4>
+                <ul class="list-unstyled d-flex flex-column gap-3 justify">
+                    <li>
+                        Naturally, any assessment comes with its own sense of excitement. When I was offered this opportunity, I was both excited and curious — eager to understand what the assessment would involve and how I could break the task down into manageable parts to arrive at a solution.
+                    </li>
+                    <li>
+                        The task took me around 24 minutes to complete. Although the recruiter had mentioned that 20 minutes should be sufficient, I found the extra time helpful for ensuring accuracy. As programming and problem-solving are things I genuinely enjoy, I was enthusiastic about tackling the task — whether large or small.
+                    </li>
+                    <li>
+                        In particular, I found this assessment fairly straightforward at first glance, but it included some subtle twists. For example, in Question 3, the instruction to create "a button" to perform two tasks prompted a small internal debate: should I use two buttons or stick to just one? I ultimately went with a single button, as that’s what was explicitly requested. However, I did consider providing the user with more control by offering the actions separately, if needed.
+                    </li>
+                    <li>
+                        Additionally, I decided to add a reset button, as I believed it could be beneficial for the user. It provides a simple way to clear results and start fresh. I also implemented basic error handling for the string reversal functionality — ensuring the input field cannot be left empty and informing the user accordingly.
+                    </li>
+                    <li>
+                        I’ve included comments throughout my code, though I tried to avoid over-commenting. My aim was to keep the code clear but not cluttered. I also added a small CSS snippet to implement a Grid layout, which ensures that the reset button is always aligned to the right side of the page for better user experience.
+                    </li>
+                    <li>
+                        Overall, I did my best and hope the solutions meet the expected standard.
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
